@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import TemperatureInput from './TemperatureInput'
+import BoilingVerdict from './BoilingVerdict'
 
 //_Object chứa 2 trạng thái
 const scaleNames = {
@@ -32,7 +33,7 @@ const tryConvert = (temperature, convertFunc) => {
   } else {
     const output = convertFunc(input)
     //_Làm tròn đến 3 chữ số thập phân
-    return (Math.round(output) * 1000) / 1000
+    return Math.round(output * 1000) / 1000
   }
 }
 
@@ -79,9 +80,17 @@ export class Calculator extends Component {
     return (
       <div>
         <TemperatureInput title={scaleNames.c} onTemperatureChange={this.handleChange('c')} temperature={celsius} />
-        <TemperatureInput title={scaleNames.f} onTemperatureChange={this.handleChange('c')} temperature={fahrenheit} />
+        <TemperatureInput title={scaleNames.f} onTemperatureChange={this.handleChange('f')} temperature={fahrenheit} />
+        <BoilingVerdict celsius={Number(celsius)} />
       </div>
     )
+    // _Vì thằng celsius là mình thông báo độ sôi
+    //nghĩa là nó phụ thuộc vào nhiệt độ là một con number
+    //và mình đã ràng buộc proptype bằng đầu vào number
+    //tuy nhiên sẽ có trường hợp là mình chuyển nhập nội dung trong ô fahrenheit
+    //dẫn tới nó đâu có ép kiểu cho ô celsius dẫn tới nó vẫn là string. Mà nếu như là string
+    //thì vi phạm proptype. Nên là thuộc tính celsius trước khi mình truyền lên cho nó thì cần
+    //phải ép về number. Nếu là '' thì ép về sẽ là 0
   }
 }
 
