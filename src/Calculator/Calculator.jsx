@@ -9,13 +9,31 @@ const scaleNames = {
   f: 'Fahrenheit'
 }
 
-//_Hàm chuyển đổi 2 nhiệt độ
+//_Hàm công thức chuyển đổi 2 nhiệt độ
 const toCelsius = (fahrenheit) => {
   return (fahrenheit - 32) / 1.8
 }
 
 const toFahrenheit = (celsius) => {
   return celsius * 1.8 + 32
+}
+
+//_Function chuyển đổi nhiệt độ
+//nhận vào temperature và callback
+const tryConvert = (temperature, convertFunc) => {
+  //_Lưu ý: lỡ người dùng không nhập vào số
+  //mà nhập vào tào lao thì không chuyển trả về giá trị '' để render ra
+  //_Lưu ý: vì mình ép từ chuỗi về số để tính toán và trong quá trình đó
+  //có thể người dùng để '' mà như vậy ép bằng class Number sẽ trả về 0 và nó sẽ tính
+  //nên không hay. Chính vì vậy mà nên chặn giá trị đầu vào là '' trước khi ép kiểu
+  const input = Number(temperature)
+  if (Number.isNaN(input) || temperature === '') {
+    return ''
+  } else {
+    const output = convertFunc(input)
+    //_Làm tròn đến 3 chữ số thập phân
+    return (Math.round(output) * 1000) / 1000
+  }
 }
 
 export class Calculator extends Component {
@@ -50,18 +68,18 @@ export class Calculator extends Component {
     //_Lấy ra scale và temperature ra từ state để tính toán cho từng loại nhiệt độ
     const { scale, temperature } = this.state
 
+    //_Tính riêng nhiệt độ cho thằng Celsius. Flow là nếu state đang có scale là 'c' thì mình ô này mình sẽ giữ nguyên
+    //và nếu là 'f' thì mình mới tính toán
+    const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature
+
+    //_Tính riêng nhiệt độ cho thằng Fahrenheit trước khi render ra. Nếu scale là 'c' thì sẽ tính còn 'f' thì mình
+    //sẽ giữ nguyên
+    const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature
+
     return (
       <div>
-        <TemperatureInput
-          title={scaleNames.c}
-          onTemperatureChange={this.handleChange('c')}
-          temperature={this.state.temperature}
-        />
-        <TemperatureInput
-          title={scaleNames.f}
-          onTemperatureChange={this.handleChange('c')}
-          temperature={this.state.temperature}
-        />
+        <TemperatureInput title={scaleNames.c} onTemperatureChange={this.handleChange('c')} temperature={celsius} />
+        <TemperatureInput title={scaleNames.f} onTemperatureChange={this.handleChange('c')} temperature={fahrenheit} />
       </div>
     )
   }
