@@ -1,11 +1,13 @@
 // import logo from './logo.svg'
 import './App.css'
-import Calculator from './Calculator/Calculator'
+import FilterableProductTable from './ThinkingInReact/FilterableProductTable'
+// import Calculator from './Calculator/Calculator'
 
 function App() {
   return (
     <div className='App'>
-      <Calculator />
+      {/* <Calculator /> */}
+      <FilterableProductTable />
     </div>
   )
 }
