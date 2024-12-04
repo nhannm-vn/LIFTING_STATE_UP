@@ -26,6 +26,10 @@ export class ProductTable extends Component {
       }
 
       //_Lưới lọc nếu mà stocked: false thì bỏ qua
+      //nghĩa là có bấm stock mà stocked lại false
+      if (inStock && !productItem.stocked) {
+        return
+      }
 
       //_Nếu chưa có ProductCategory thì hãy thêm nó vào
       if (productItem.category !== lastCategory) {
