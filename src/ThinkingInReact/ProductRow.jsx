@@ -3,10 +3,11 @@ import React, { Component } from 'react'
 
 export class ProductRow extends Component {
   render() {
+    const { name, price } = this.props.product
     return (
       <tr>
-        <td>Football</td>
-        <td>$49.99</td>
+        <td>{name}</td>
+        <td>{price}</td>
       </tr>
     )
   }

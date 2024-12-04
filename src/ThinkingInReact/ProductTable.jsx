@@ -21,11 +21,11 @@ export class ProductTable extends Component {
     productList.forEach((productItem) => {
       //_Nếu chưa có ProductCategory thì hãy thêm nó vào
       if (productItem.category !== lastCategory) {
-        rows.push(<ProductCategoryRow key={productItem.category} />)
-        rows.push(<ProductRow key={productItem.name} />)
+        rows.push(<ProductCategoryRow key={productItem.category} category={productItem.category} />)
+        rows.push(<ProductRow key={productItem.name} product={productItem} />)
       } else {
         //_Nếu có rồi thì thêm sản phẩm thôi
-        rows.push(<ProductRow key={productItem.name} />)
+        rows.push(<ProductRow key={productItem.name} product={productItem} />)
       }
       //_Dù thêm cái nào thì sau vòng lặp phải gán biến lại
       lastCategory = productItem.category
