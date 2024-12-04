@@ -83,10 +83,10 @@ export class FilterableProductTable extends Component {
         ...prevState,
         searchText: event.target.value
       }))
-    } else {
+    } else if (name === 'inStock') {
       this.setState((prevState) => ({
         ...prevState,
-        searchText: event.target.checked
+        inStock: event.target.checked
       }))
     }
   }
