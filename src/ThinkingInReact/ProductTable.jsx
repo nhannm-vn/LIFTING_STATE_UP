@@ -6,7 +6,7 @@ import ProductRow from './ProductRow'
 export class ProductTable extends Component {
   render() {
     //_Lấy danh sách từ props truyền vào
-    const { productList } = this.props
+    const { productList, searchText, inStock } = this.props
 
     //_Mình sẽ thiết kế thuật toán
     //+lastCategory: dùng để check xem là ProducCategory có lặp lại không
@@ -19,6 +19,14 @@ export class ProductTable extends Component {
     //chứ không nằm bên component element
     //_Đối với render bằng map thì sẽ cần Fragment và key sẽ là của Fragment
     productList.forEach((productItem) => {
+      //_Lưới lọc nếu mà search không có thì bỏ qua
+      //nghĩa là từ search không được tìm thấy trong name của product
+      if (productItem.name.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
+        return
+      }
+
+      //_Lưới lọc nếu mà stocked: false thì bỏ qua
+
       //_Nếu chưa có ProductCategory thì hãy thêm nó vào
       if (productItem.category !== lastCategory) {
         rows.push(<ProductCategoryRow key={productItem.category} category={productItem.category} />)
@@ -28,6 +36,8 @@ export class ProductTable extends Component {
         rows.push(<ProductRow key={productItem.name} product={productItem} />)
       }
       //_Dù thêm cái nào thì sau vòng lặp phải gán biến lại
+      //nghĩa là nếu có thêm thì đều phải gán category lại để lỡ lần sau
+      //nếu có thêm thì sẽ check dược là có cần thêm category không
       lastCategory = productItem.category
     })
 
